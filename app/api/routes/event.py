@@ -1,17 +1,27 @@
+from pickle import NONE
 from typing import Any, List
 from venv import logger
+from fastapi import Request
+from fastapi.responses import HTMLResponse
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from app.models.event import Event
 from app.api import deps
 from app.schemas import event
+from app.templates.template import templates
 
 router = APIRouter()
 
+@router.get("/", response_class=HTMLResponse)
+async def read_events(request: Request ):
+    return templates.TemplateResponse("event.html", 
+                                      {"request": request, 
+                                       "name": "Event"})
+
 
 @router.get("/{owner_id}", response_model=event.Event)
-def read_items(
+async def read_items(
     owner_id: int,
     db: Session = Depends(deps.get_db),
 ) -> Any:
@@ -24,7 +34,7 @@ def read_items(
 
 
 @router.post("/{owner_id}", response_model=event.Event)
-def create_item(
+async def create_item(
     owner_id: int,
     obj_in: event.EventCreate,
     db: Session = Depends(deps.get_db),
@@ -47,7 +57,7 @@ def create_item(
 
 
 @router.put("/{id}", response_model=event.Event)
-def update_item(
+async def update_item(
     owner_id: int,
     id: int,
     obj_in: event.EventUpdate,
@@ -71,7 +81,7 @@ def update_item(
 
 
 @router.delete("/{id}", response_model=event.Event)
-def delete_item(
+async def delete_item(
     owner_id: int,
     id: int,
     db: Session = Depends(deps.get_db),

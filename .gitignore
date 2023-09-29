@@ -1,5 +1,6 @@
 .env
-
+game_litics.db
+# --------------------------
 .idea
 .ipynb_checkpoints
 .mypy_cache
