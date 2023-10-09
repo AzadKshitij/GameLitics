@@ -16,7 +16,6 @@ class EventBase(BaseModel):
 class EventCreate(EventBase):
     gameName: str
     gameVersion: str
-    eventDate: str
     eventType: str
     eventParam: str
 
@@ -31,7 +30,6 @@ class EventInDBBase(EventBase):
     id: int
     gameName: str
     gameVersion: str
-    eventDate: str
     eventType: str
     eventParam: str
     owner_id: int

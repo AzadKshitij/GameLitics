@@ -5,8 +5,6 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from app.models.user import User
 from app.api import deps
-from app.schemas import user
-
 router = APIRouter()
 
 
@@ -18,8 +16,13 @@ def read_item(
     """
     Retrieve items.
     """
-    user_info = db.query(User).filter(
-        User.id == user_id).all()
+    try:
+        user_info = db.query(User).filter(
+            User.id == user_id).all()
+    except Exception as e:
+        logger.error(msg= "User not found " + str(e))
+        raise HTTPException(status_code=404, detail="User not found")
+         
     return jsonable_encoder(user_info)
 
 # @router.post("/", response_model=user.User)

@@ -3,12 +3,15 @@ import logging
 from starlette.middleware.cors import CORSMiddleware
 from app.core.config import config
 from app.api.api import api_router
+from app.logger import logger
 
+logging.basicConfig(level=logging.INFO, 
+                    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+                    datefmt="%Y-%m-%d %H:%M:%S"
+                    
+                    )
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-logger.info("Creating GameLitics app instance")
+logger.debug("Creating GameLitics app instance")
 
 app = FastAPI(
     title=config.get("PROJECT_NAME")
